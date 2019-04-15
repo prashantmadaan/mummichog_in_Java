@@ -2,6 +2,7 @@ package driver;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,6 +28,12 @@ import reporting.LocalFileGenerator;
 public class Orchestration {
 	
 	private final static Logger LOGGER = Logger.getLogger(Orchestration.class.getName());
+	
+	public File getFile(String path) {
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource(path).getFile());
+		return file;
+	}
 
 	public static void main(String[] args) {
 		LOGGER.info("Mummichog Code Run Begins");
@@ -38,7 +45,7 @@ public class Orchestration {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			rm= mapper.readValue(new File("./JSON_metabolicModels.py"), RealModels.class);
+			rm= mapper.readValue(Orchestration.class.getResource("JSON_metabolicModels.py"), RealModels.class);
 			LOGGER.info("JSON File Read");
 			
 		} catch (IOException e) {
